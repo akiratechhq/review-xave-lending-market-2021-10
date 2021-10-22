@@ -43,10 +43,28 @@ The initial review focused on the [{{project_name}}]({{source_repository}}) repo
 <!-- We focused on manually reviewing the codebase, searching for security issues such as, but not limited to, re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, costly gas patterns, architectural problems, code readability. -->
 
 **Includes:**
-- GoodContract.sol
 
-**Excludes:**
-- BadContract.sol
+- code/contracts/buyback/Treasury.sol
+- code/contracts/buyback/interfaces/ICurve.sol
+- code/contracts/buyback/interfaces/ICurveFactory.sol
+- code/contracts/buyback/interfaces/IUniswapV2Router01.sol
+- code/contracts/buyback/interfaces/IUniswapV2Router02.sol
+- code/contracts/incentives/RnbwDistributionManager.sol
+- code/contracts/incentives/RnbwIncentivesController.sol
+- code/contracts/incentives/VersionedInitializable.sol
+- code/contracts/incentives/interfaces/IAToken.sol
+- code/contracts/incentives/interfaces/IERC20.sol
+- code/contracts/incentives/interfaces/IERC20Detailed.sol
+- code/contracts/incentives/interfaces/IRnbwDistributionManager.sol
+- code/contracts/incentives/interfaces/IRnbwIncentivesController.sol
+- code/contracts/incentives/interfaces/IStakedAave.sol
+- code/contracts/incentives/lib/Context.sol
+- code/contracts/incentives/lib/DistributionTypes.sol
+- code/contracts/incentives/lib/ERC20.sol
+- code/contracts/incentives/lib/MintableErc20.sol
+- code/contracts/incentives/lib/SafeMath.sol
+- code/contracts/protocol/tokenization/IncentivizedERC20.sol
+
 
 ## Recommendations
 
