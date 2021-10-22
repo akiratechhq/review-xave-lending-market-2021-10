@@ -1,0 +1,11 @@
+{
+    "project_name": "Project name",
+    "client_name": "Client name",
+    "review_period": "2 weeks",
+    "date_interval": "October 15 to November 15, 2020",
+    "person_days": "5",
+    "template": "./Readme.md.mustache",
+    "date": "October 2021",
+    "commit_hash": "01486a398b0aa36b9798ba06fce11b5d3376909d",
+    "source_repository": "git@github.com:HaloDAO/lending-market-v1.git"
+}
