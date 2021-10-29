@@ -58,8 +58,6 @@ We focused on manually reviewing the codebase, searching for security issues suc
 - code/contracts/incentives/lib/DistributionTypes.sol
 - code/contracts/incentives/lib/ERC20.sol
 - code/contracts/incentives/lib/SafeMath.sol
-- code/contracts/protocol/tokenization/IncentivizedERC20.sol
-
 
 ## Recommendations
 
@@ -88,53 +86,617 @@ A good rule of thumb is to have 100% test coverage. This does not guarantee the 
 
 Sūrya is a utility tool for smart contract systems. It provides a number of visual outputs and information about the structure of smart contracts. It also supports querying the function call graph in multiple ways to aid in the manual inspection and control flow analysis of contracts.
 
-<!-- **Contracts Description Table**
+## Sūrya's Description Report
 
-```text
-surya mdreport report.md Contract.sol
-```
+### Files Description Table
 
--->
+
+|  File Name  |  SHA-1 Hash  |
+|-------------|--------------|
+| code/contracts/buyback/Treasury.sol | aabfa1b294af1775a30ad7cc1432aca3adaef48a |
+| code/contracts/buyback/interfaces/ICurve.sol | 6709bd40881023198aa153762c2680cf5825c1c5 |
+| code/contracts/buyback/interfaces/ICurveFactory.sol | 6818643831d3b11ae062df66ac13478a9e7a458c |
+| code/contracts/buyback/interfaces/IUniswapV2Router01.sol | 2acc9e5833363f28ed4da6a17ca9ff5aec263a16 |
+| code/contracts/buyback/interfaces/IUniswapV2Router02.sol | c6896849a13dcbff97b81a39a29a6b8aec28d8e8 |
+| code/contracts/incentives/RnbwDistributionManager.sol | d7e6fda899a3c2b76edd3f02535b9f8fe1bae20b |
+| code/contracts/incentives/RnbwIncentivesController.sol | 4f54f90c53d3c635c7d198b3514040d65b728c0c |
+| code/contracts/incentives/VersionedInitializable.sol | 8727598c2af3d69e992d12074c5cb63f77ed0357 |
+| code/contracts/incentives/interfaces/IAToken.sol | b973c8ceb01f4b43092435f8a79c7422093351bf |
+| code/contracts/incentives/interfaces/IERC20.sol | ecd6d26d76013b7dc7c7c309e651200895d3eba7 |
+| code/contracts/incentives/interfaces/IERC20Detailed.sol | 552c23c3ba74003da1d837e52e8c9d2caee8c7a2 |
+| code/contracts/incentives/interfaces/IRnbwDistributionManager.sol | b01e2e6b38a815e6a18faf1ba8d4a5cd427995ed |
+| code/contracts/incentives/interfaces/IRnbwIncentivesController.sol | 1e27c32483aeb95b80f3d859fc6094c702001cfe |
+| code/contracts/incentives/interfaces/IStakedAave.sol | af981d723fa5ab19fb6fc8bfa494283e58d4eddc |
+| code/contracts/incentives/lib/Context.sol | ff1e49ddb3ef87789448a17c39e3ee1992ebfad7 |
+| code/contracts/incentives/lib/DistributionTypes.sol | 1cf4903d754a79c147c94142915d8c34cc710bf7 |
+| code/contracts/incentives/lib/ERC20.sol | 4e48c68a0c7125c0cda79e9c22dd950eb835742a |
+| code/contracts/incentives/lib/SafeMath.sol | 6b776dc4a284a7c92f78c37360f8abcf5b8bec72 |
+| code/contracts/protocol/tokenization/IncentivizedERC20.sol | 4e0442ef5b1ff0d01e993f67624f397e76fec335 |
+
+
+### Contracts Description Table
+
+
+|  Contract  |         Type        |       Bases      |                  |                 |
+|:----------:|:-------------------:|:----------------:|:----------------:|:---------------:|
+|     └      |  **Function Name**  |  **Visibility**  |  **Mutability**  |  **Modifiers**  |
+||||||
+| **Treasury** | Implementation | Ownable |||
+| └ | <Constructor> | Public ❗️ | 🛑  |NO❗️ |
+| └ | buybackRnbw | External ❗️ | 🛑  | onlyOwner |
+| └ | convertToUsdc | Internal 🔒 | 🛑  | |
+| └ | sendToVestingContract | External ❗️ | 🛑  | onlyOwner |
+||||||
+| **ICurve** | Interface |  |||
+| └ | originSwap | External ❗️ | 🛑  |NO❗️ |
+||||||
+| **ICurveFactory** | Interface |  |||
+| └ | getCurve | External ❗️ |   |NO❗️ |
+||||||
+| **IUniswapV2Router01** | Interface |  |||
+| └ | factory | External ❗️ |   |NO❗️ |
+| └ | WETH | External ❗️ |   |NO❗️ |
+| └ | addLiquidity | External ❗️ | 🛑  |NO❗️ |
+| └ | addLiquidityETH | External ❗️ |  💵 |NO❗️ |
+| └ | removeLiquidity | External ❗️ | 🛑  |NO❗️ |
+| └ | removeLiquidityETH | External ❗️ | 🛑  |NO❗️ |
+| └ | removeLiquidityWithPermit | External ❗️ | 🛑  |NO❗️ |
+| └ | removeLiquidityETHWithPermit | External ❗️ | 🛑  |NO❗️ |
+| └ | swapExactTokensForTokens | External ❗️ | 🛑  |NO❗️ |
+| └ | swapTokensForExactTokens | External ❗️ | 🛑  |NO❗️ |
+| └ | swapExactETHForTokens | External ❗️ |  💵 |NO❗️ |
+| └ | swapTokensForExactETH | External ❗️ | 🛑  |NO❗️ |
+| └ | swapExactTokensForETH | External ❗️ | 🛑  |NO❗️ |
+| └ | swapETHForExactTokens | External ❗️ |  💵 |NO❗️ |
+| └ | quote | External ❗️ |   |NO❗️ |
+| └ | getAmountOut | External ❗️ |   |NO❗️ |
+| └ | getAmountIn | External ❗️ |   |NO❗️ |
+| └ | getAmountsOut | External ❗️ |   |NO❗️ |
+| └ | getAmountsIn | External ❗️ |   |NO❗️ |
+||||||
+| **IUniswapV2Router02** | Interface | IUniswapV2Router01 |||
+| └ | removeLiquidityETHSupportingFeeOnTransferTokens | External ❗️ | 🛑  |NO❗️ |
+| └ | removeLiquidityETHWithPermitSupportingFeeOnTransferTokens | External ❗️ | 🛑  |NO❗️ |
+| └ | swapExactTokensForTokensSupportingFeeOnTransferTokens | External ❗️ | 🛑  |NO❗️ |
+| └ | swapExactETHForTokensSupportingFeeOnTransferTokens | External ❗️ |  💵 |NO❗️ |
+| └ | swapExactTokensForETHSupportingFeeOnTransferTokens | External ❗️ | 🛑  |NO❗️ |
+||||||
+| **RnbwDistributionManager** | Implementation | IRnbwDistributionManager |||
+| └ | <Constructor> | Public ❗️ | 🛑  |NO❗️ |
+| └ | configureAssets | External ❗️ | 🛑  |NO❗️ |
+| └ | _updateAssetStateInternal | Internal 🔒 | 🛑  | |
+| └ | _updateUserAssetInternal | Internal 🔒 | 🛑  | |
+| └ | _claimRewards | Internal 🔒 | 🛑  | |
+| └ | _getUnclaimedRewards | Internal 🔒 |   | |
+| └ | _getRewards | Internal 🔒 |   | |
+| └ | _getAssetIndex | Internal 🔒 |   | |
+| └ | getUserAssetData | Public ❗️ |   |NO❗️ |
+||||||
+| **RnbwIncentivesController** | Implementation | IRnbwIncentivesController, VersionedInitializable, RnbwDistributionManager |||
+| └ | <Constructor> | Public ❗️ | 🛑  | RnbwDistributionManager |
+| └ | handleAction | External ❗️ | 🛑  |NO❗️ |
+| └ | getRewardsBalance | External ❗️ |   |NO❗️ |
+| └ | claimRewards | External ❗️ | 🛑  |NO❗️ |
+| └ | getUserUnclaimedRewards | External ❗️ |   |NO❗️ |
+| └ | getRevision | Internal 🔒 |   | |
+||||||
+| **VersionedInitializable** | Implementation |  |||
+| └ | getRevision | Internal 🔒 |   | |
+||||||
+| **IAToken** | Interface |  |||
+| └ | getScaledUserBalanceAndSupply | External ❗️ |   |NO❗️ |
+||||||
+| **IERC20** | Interface |  |||
+| └ | totalSupply | External ❗️ |   |NO❗️ |
+| └ | balanceOf | External ❗️ |   |NO❗️ |
+| └ | transfer | External ❗️ | 🛑  |NO❗️ |
+| └ | allowance | External ❗️ |   |NO❗️ |
+| └ | approve | External ❗️ | 🛑  |NO❗️ |
+| └ | transferFrom | External ❗️ | 🛑  |NO❗️ |
+||||||
+| **IERC20Detailed** | Interface | IERC20 |||
+| └ | name | External ❗️ |   |NO❗️ |
+| └ | symbol | External ❗️ |   |NO❗️ |
+| └ | decimals | External ❗️ |   |NO❗️ |
+||||||
+| **IRnbwDistributionManager** | Interface |  |||
+| └ | configureAssets | External ❗️ | 🛑  |NO❗️ |
+||||||
+| **IRnbwIncentivesController** | Interface |  |||
+| └ | handleAction | External ❗️ | 🛑  |NO❗️ |
+| └ | getRewardsBalance | External ❗️ |   |NO❗️ |
+| └ | claimRewards | External ❗️ | 🛑  |NO❗️ |
+||||||
+| **IStakedAave** | Interface |  |||
+| └ | stake | External ❗️ | 🛑  |NO❗️ |
+| └ | redeem | External ❗️ | 🛑  |NO❗️ |
+| └ | cooldown | External ❗️ | 🛑  |NO❗️ |
+| └ | claimRewards | External ❗️ | 🛑  |NO❗️ |
+||||||
+| **Context** | Implementation |  |||
+| └ | _msgSender | Internal 🔒 |   | |
+| └ | _msgData | Internal 🔒 |   | |
+||||||
+| **DistributionTypes** | Library |  |||
+||||||
+| **ERC20** | Implementation | Context, IERC20, IERC20Detailed |||
+| └ | <Constructor> | Public ❗️ | 🛑  |NO❗️ |
+| └ | name | Public ❗️ |   |NO❗️ |
+| └ | symbol | Public ❗️ |   |NO❗️ |
+| └ | decimals | Public ❗️ |   |NO❗️ |
+| └ | totalSupply | Public ❗️ |   |NO❗️ |
+| └ | balanceOf | Public ❗️ |   |NO❗️ |
+| └ | transfer | Public ❗️ | 🛑  |NO❗️ |
+| └ | allowance | Public ❗️ |   |NO❗️ |
+| └ | approve | Public ❗️ | 🛑  |NO❗️ |
+| └ | transferFrom | Public ❗️ | 🛑  |NO❗️ |
+| └ | increaseAllowance | Public ❗️ | 🛑  |NO❗️ |
+| └ | decreaseAllowance | Public ❗️ | 🛑  |NO❗️ |
+| └ | _transfer | Internal 🔒 | 🛑  | |
+| └ | _mint | Internal 🔒 | 🛑  | |
+| └ | _burn | Internal 🔒 | 🛑  | |
+| └ | _approve | Internal 🔒 | 🛑  | |
+| └ | _setName | Internal 🔒 | 🛑  | |
+| └ | _setSymbol | Internal 🔒 | 🛑  | |
+| └ | _setDecimals | Internal 🔒 | 🛑  | |
+| └ | _beforeTokenTransfer | Internal 🔒 | 🛑  | |
+||||||
+| **SafeMath** | Library |  |||
+| └ | add | Internal 🔒 |   | |
+| └ | sub | Internal 🔒 |   | |
+| └ | sub | Internal 🔒 |   | |
+| └ | mul | Internal 🔒 |   | |
+| └ | div | Internal 🔒 |   | |
+| └ | div | Internal 🔒 |   | |
+| └ | mod | Internal 🔒 |   | |
+| └ | mod | Internal 🔒 |   | |
+||||||
+| **IncentivizedERC20** | Implementation | Context, IERC20, IERC20Detailed |||
+| └ | <Constructor> | Public ❗️ | 🛑  |NO❗️ |
+| └ | name | Public ❗️ |   |NO❗️ |
+| └ | symbol | Public ❗️ |   |NO❗️ |
+| └ | decimals | Public ❗️ |   |NO❗️ |
+| └ | totalSupply | Public ❗️ |   |NO❗️ |
+| └ | balanceOf | Public ❗️ |   |NO❗️ |
+| └ | _getIncentivesController | Internal 🔒 |   | |
+| └ | transfer | Public ❗️ | 🛑  |NO❗️ |
+| └ | allowance | Public ❗️ |   |NO❗️ |
+| └ | approve | Public ❗️ | 🛑  |NO❗️ |
+| └ | transferFrom | Public ❗️ | 🛑  |NO❗️ |
+| └ | increaseAllowance | Public ❗️ | 🛑  |NO❗️ |
+| └ | decreaseAllowance | Public ❗️ | 🛑  |NO❗️ |
+| └ | _transfer | Internal 🔒 | 🛑  | |
+| └ | _mint | Internal 🔒 | 🛑  | |
+| └ | _burn | Internal 🔒 | 🛑  | |
+| └ | _approve | Internal 🔒 | 🛑  | |
+| └ | _setName | Internal 🔒 | 🛑  | |
+| └ | _setSymbol | Internal 🔒 | 🛑  | |
+| └ | _setDecimals | Internal 🔒 | 🛑  | |
+| └ | _beforeTokenTransfer | Internal 🔒 | 🛑  | |
+
+
+### Legend
+
+|  Symbol  |  Meaning  |
+|:--------:|-----------|
+|    🛑    | Function can modify state |
+|    💵    | Function is payable |
 
 #### Graphs
 
-<!-- ***Contract***
+![Treasury Graph](./static/Treasury_graph.png)
 
-```text
-surya graph Contract.sol | dot -Tpng > ./static/Contract_graph.png
-```
+![RnbwDistributionManager Graph](./static/RnbwDistributionManager_graph.png)
 
-![Contract Graph](./static/Contract_graph.png)
+![RnbwIncentivesController Graph](./static/RnbwIncentivesController_graph.png)
 
-```text
-surya inheritance Contract.sol | dot -Tpng > ./static/Contract_inheritance.png
-```
-
-![Contract Inheritance](./static/Contract_inheritance.png)
-
-```text
-Use Solidity Visual Auditor
-```
-
-![Contract UML](./static/Contract_uml.png) -->
 
 #### Describe
 
-<!-- ```text
-$ npx surya describe ./Contract.sol
-``` -->
+```text
+$ npx surya describe code/contracts/buyback/Treasury.sol
+ +  Treasury (Ownable)
+    - [Pub] <Constructor> #
+    - [Ext] buybackRnbw #
+       - modifiers: onlyOwner
+    - [Int] convertToUsdc #
+    - [Ext] sendToVestingContract #
+       - modifiers: onlyOwner
 
-### Coverage
 
-<!-- ```text
-$ npm run coverage
-``` -->
+ ($) = payable function
+ # = non-constant function
+```
+
+```text
+$ npx surya describe code/contracts/incentives/RnbwDistributionManager.sol
+ +  RnbwDistributionManager (IRnbwDistributionManager)
+    - [Pub] <Constructor> #
+    - [Ext] configureAssets #
+    - [Int] _updateAssetStateInternal #
+    - [Int] _updateUserAssetInternal #
+    - [Int] _claimRewards #
+    - [Int] _getUnclaimedRewards
+    - [Int] _getRewards
+    - [Int] _getAssetIndex
+    - [Pub] getUserAssetData
+
+
+ ($) = payable function
+ # = non-constant function
+```
+
+```text
+$ npx surya describe code/contracts/incentives/RnbwIncentivesController.sol
+ +  RnbwIncentivesController (IRnbwIncentivesController, VersionedInitializable, RnbwDistributionManager)
+    - [Pub] <Constructor> #
+       - modifiers: RnbwDistributionManager
+    - [Ext] handleAction #
+    - [Ext] getRewardsBalance
+    - [Ext] claimRewards #
+    - [Ext] getUserUnclaimedRewards
+    - [Int] getRevision
+
+
+ ($) = payable function
+ # = non-constant function
+```
+
 
 ### Tests
 
-<!-- ```text
-$ npx buidler test
-``` -->
+```text
+npm run testhalo
+
+> @aave/protocol-v2@1.0.1 testhalo
+> npm run compile && TS_NODE_TRANSPILE_ONLY=1 hardhat test ./test-suites/test-aave/_*.spec.ts
+
+
+> @aave/protocol-v2@1.0.1 compile
+> SKIP_LOAD=true hardhat compile
+
+Compiling 137 files with 0.6.12
+contracts/buyback/interfaces/IUniswapV2Router01.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+contracts/buyback/interfaces/IUniswapV2Router02.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+contracts/buyback/interfaces/IUniswapV2RouterMock.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+contracts/buyback/mocks/UniswapMock.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+contracts/incentives/interfaces/IAToken.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+contracts/protocol/lendingpool/LendingPoolConfigurator.sol:70:25: Warning: This declaration shadows an existing declaration.
+  function _initReserve(ILendingPool pool, InitReserveInput calldata input) internal {
+                        ^---------------^
+contracts/protocol/lendingpool/LendingPoolConfigurator.sol:34:3: The shadowed declaration is here:
+  ILendingPool internal pool;
+  ^------------------------^
+
+contracts/dependencies/openzeppelin/upgradeability/BaseAdminUpgradeabilityProxy.sol:14:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract BaseAdminUpgradeabilityProxy is BaseUpgradeabilityProxy {
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/dependencies/openzeppelin/upgradeability/Proxy.sol:16:3: The payable fallback function is defined here.
+  fallback() external payable {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+contracts/dependencies/openzeppelin/upgradeability/AdminUpgradeabilityProxy.sol:11:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract AdminUpgradeabilityProxy is BaseAdminUpgradeabilityProxy, UpgradeabilityProxy {
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/dependencies/openzeppelin/upgradeability/Proxy.sol:16:3: The payable fallback function is defined here.
+  fallback() external payable {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+contracts/dependencies/openzeppelin/upgradeability/InitializableUpgradeabilityProxy.sol:11:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract InitializableUpgradeabilityProxy is BaseUpgradeabilityProxy {
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/dependencies/openzeppelin/upgradeability/Proxy.sol:16:3: The payable fallback function is defined here.
+  fallback() external payable {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+contracts/dependencies/openzeppelin/upgradeability/InitializableAdminUpgradeabilityProxy.sol:12:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract InitializableAdminUpgradeabilityProxy is
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/dependencies/openzeppelin/upgradeability/Proxy.sol:16:3: The payable fallback function is defined here.
+  fallback() external payable {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+contracts/protocol/libraries/aave-upgradeability/BaseImmutableAdminUpgradeabilityProxy.sol:16:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract BaseImmutableAdminUpgradeabilityProxy is BaseUpgradeabilityProxy {
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/dependencies/openzeppelin/upgradeability/Proxy.sol:16:3: The payable fallback function is defined here.
+  fallback() external payable {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+contracts/protocol/libraries/aave-upgradeability/InitializableImmutableAdminUpgradeabilityProxy.sol:11:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract InitializableImmutableAdminUpgradeabilityProxy is
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/dependencies/openzeppelin/upgradeability/Proxy.sol:16:3: The payable fallback function is defined here.
+  fallback() external payable {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+contracts/buyback/mocks/CurveMock.sol:38:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    address _target,
+    ^-------------^
+
+contracts/buyback/mocks/CurveMock.sol:40:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    uint256 _minTargetAmount,
+    ^----------------------^
+
+contracts/buyback/mocks/CurveMock.sol:41:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    uint256 _deadline
+    ^---------------^
+
+contracts/buyback/mocks/UniswapMock.sol:18:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    uint256 amountOutMin,
+    ^------------------^
+
+contracts/buyback/mocks/UniswapMock.sol:20:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    address to,
+    ^--------^
+
+contracts/buyback/mocks/UniswapMock.sol:21:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    uint256 deadline
+    ^--------------^
+
+contracts/incentives/RnbwIncentivesController.sol:119:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    bool stake
+    ^--------^
+
+contracts/mocks/dependencies/weth/WETH9.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+contracts/mocks/oracle/CLAggregators/MockAggregator.sol:18:3: Warning: Function state mutability can be restricted to pure
+  function getTokenType() external view returns (uint256) {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+Compilation finished successfully
+Creating Typechain artifacts in directory types for target ethers-v5
+Successfully generated Typechain artifacts!
+Creating Typechain artifacts in directory types for target ethers-v5
+Successfully generated Typechain artifacts!
+
+- Enviroment
+  - Network : hardhat
+-> Deploying test environment...
+Deployed mocks
+Mock aggs deployed
+- Oracle borrow initalization in 1 txs
+  - Setted Oracle Borrow Rates for: WETH, DAI, USDC, XSGD, THKD
+Initialize configuration
+- Skipping init of AAVE due token address is not set at markets config
+- Skipping init of BAT due token address is not set at markets config
+- Skipping init of BUSD due token address is not set at markets config
+Strategy address for asset DAI: 0xBbC60A8fAf66552554e460d55Ac0563Fb9e76c01
+Strategy address for asset XSGD: 0xdDD96662ea11dA6F289A5D00da41Ec5F3b67d2b4
+Strategy address for asset THKD: 0xdDD96662ea11dA6F289A5D00da41Ec5F3b67d2b4
+- Skipping init of ENJ due token address is not set at markets config
+- Skipping init of KNC due token address is not set at markets config
+- Skipping init of LINK due token address is not set at markets config
+- Skipping init of MANA due token address is not set at markets config
+- Skipping init of MKR due token address is not set at markets config
+- Skipping init of REN due token address is not set at markets config
+- Skipping init of SNX due token address is not set at markets config
+- Skipping init of SUSD due token address is not set at markets config
+- Skipping init of TUSD due token address is not set at markets config
+- Skipping init of UNI due token address is not set at markets config
+Strategy address for asset USDC: 0xdDD96662ea11dA6F289A5D00da41Ec5F3b67d2b4
+- Skipping init of USDT due token address is not set at markets config
+- Skipping init of WBTC due token address is not set at markets config
+Strategy address for asset WETH: 0xecE50C63d1Ae02Ba306c2b2E1579d0327220196e
+- Skipping init of YFI due token address is not set at markets config
+- Skipping init of ZRX due token address is not set at markets config
+- Skipping init of xSUSHI due token address is not set at markets config
+- Reserves initialization in 2 txs
+  - Reserve ready for: DAI, XSGD, THKD, USDC
+    * gasUsed 7972709
+  - Reserve ready for: WETH
+    * gasUsed 2039566
+- Skipping init of AAVE due token address is not set at markets config
+- Skipping init of BAT due token address is not set at markets config
+- Skipping init of BUSD due token address is not set at markets config
+- Skipping init of ENJ due token address is not set at markets config
+- Skipping init of KNC due token address is not set at markets config
+- Skipping init of LINK due token address is not set at markets config
+- Skipping init of MANA due token address is not set at markets config
+- Skipping init of MKR due token address is not set at markets config
+- Skipping init of REN due token address is not set at markets config
+- Skipping init of SNX due token address is not set at markets config
+- Skipping init of SUSD due token address is not set at markets config
+- Skipping init of TUSD due token address is not set at markets config
+- Skipping init of UNI due token address is not set at markets config
+- Skipping init of USDT due token address is not set at markets config
+- Skipping init of WBTC due token address is not set at markets config
+- Skipping init of YFI due token address is not set at markets config
+- Skipping init of ZRX due token address is not set at markets config
+- Skipping init of xSUSHI due token address is not set at markets config
+- Configure reserves in 1 txs
+  - Init for: DAI, XSGD, THKD, USDC, WETH
+setup: 6.226s
+
+***************
+Setup and snapshot finished
+***************
+
+  Fee BuyBack
+Rnbw Address: 0xE4C10Db67595aF2Cb4166c8C274e0140f7E43059
+0x099d9fF8F818290C8b5B7Db5bFca84CEebd2714c
+0x00aD4926D7613c8e00cB6CFa61831D5668265724
+BigNumber { _hex: '0x0458fd2d9341', _isBigNumber: true }
+BigNumber { _hex: '0x00', _isBigNumber: true }
+BigNumber { _hex: '0x00', _isBigNumber: true }
+Deployer has rnbw tokens: 10000000000000000000000000
+curveMockDaiAddress: 0xe1B3b8F6b298b52bCd15357ED29e65e66a4045fF
+Deployer has usdc tokens: 10000000000000000000000000
+Uniswap Contract Rnbw balance initial: 10000000000000000000000000
+Treasury Contract Rnbw balance initial: 0
+Buy back rnbw ...
+Treasury Contract Rnbw balance final: 9560502593770
+Vesting Contract Rnbw balance initial: 0
+Send rnbw to vesting ...
+Vesting Contract Rnbw balance final: 9560502593770
+    ✓ buyback test
+
+  Incentives Controller
+deployer.address: 0xc783df8a850f42e7F7e57013759C285caa701eB6
+secondaryWallet.address: 0xeAD9C93b79Ae7C1591b1FB5323BD777E86e150d4
+Rnbw Address: 0xE4C10Db67595aF2Cb4166c8C274e0140f7E43059
+emissionManager: 0x79dC3dA279A2ADc72210BD00e10951AB9dC70ABc
+rnbwIncentivesController: 0xF0B4ACda6D679ea22AC5C4fD1973D0d58eA10ec1
+emissionManager rnbwIncentivesController: 0x79dC3dA279A2ADc72210BD00e10951AB9dC70ABc
+incentives Controller set on emission manager: 0xF0B4ACda6D679ea22AC5C4fD1973D0d58eA10ec1
+incentivesController dai: 1000000000000000000,1635484852,0
+incentivesController xsgd: 1000000000000000000,1635484852,0
+aDAI balance user after deposit: 2000000000000000000000
+0x7c2C195CD6D34B8F845992d380aADB2730bB9C6F
+User Unclaimed rewards: 606000000000000000000
+User RewardsBalance: 1205999988832760484000
+User 2 Unclaimed rewards: 603000000000000000000
+User 2 RewardsBalance: 603000000000000000000
+    ✓ steak
+
+·----------------------------------------------------------------------------|---------------------------|-------------|-----------------------------·
+|                            Solc version: 0.6.12                            ·  Optimizer enabled: true  ·  Runs: 200  ·  Block limit: 12450000 gas  │
+·············································································|···························|·············|······························
+|  Methods                                                                                                                                           │
+·········································|···································|·············|·············|·············|···············|··············
+|  Contract                              ·  Method                           ·  Min        ·  Max        ·  Avg        ·  # calls      ·  eur (avg)  │
+·········································|···································|·············|·············|·············|···············|··············
+|  ATokensAndRatesHelper                 ·  configureReserves                ·          -  ·          -  ·     243281  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPool                           ·  borrow                           ·     312133  ·     397054  ·     352671  ·            4  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPool                           ·  deposit                          ·     245995  ·     285665  ·     261744  ·            6  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPool                           ·  setUserUseReserveAsCollateral    ·          -  ·          -  ·      75575  ·            3  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setEmergencyAdmin                ·          -  ·          -  ·      47243  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setLendingPoolCollateralManager  ·          -  ·          -  ·      47176  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setLendingPoolConfiguratorImpl   ·          -  ·          -  ·     537594  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setLendingPoolImpl               ·          -  ·          -  ·     578804  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setLendingRateOracle             ·          -  ·          -  ·      47198  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setPoolAdmin                     ·      30121  ·      47221  ·      35821  ·            6  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider          ·  setPriceOracle                   ·          -  ·          -  ·      47198  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProviderRegistry  ·  registerAddressesProvider        ·          -  ·          -  ·      91923  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingPoolConfigurator               ·  batchInitReserve                 ·    2039566  ·    7972709  ·    5006138  ·            4  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  LendingRateOracle                     ·  transferOwnership                ·          -  ·          -  ·      28605  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  MintableERC20                         ·  approve                          ·          -  ·          -  ·      46195  ·            4  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  MintableERC20                         ·  mint                             ·          -  ·          -  ·      68102  ·            5  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  MintableERC20                         ·  transfer                         ·          -  ·          -  ·      36723  ·            1  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  MockEmissionManager                   ·  configure                        ·          -  ·          -  ·      87183  ·            1  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  MockEmissionManager                   ·  setIncentivesController          ·          -  ·          -  ·      46153  ·            1  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  PriceOracle                           ·  setAssetPrice                    ·      45615  ·      45639  ·      45629  ·           10  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  PriceOracle                           ·  setEthUsdPrice                   ·          -  ·          -  ·      44944  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  RnbwMock                              ·  mint                             ·          -  ·          -  ·      70769  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  RnbwMock                              ·  transfer                         ·          -  ·          -  ·      36849  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  StableAndVariableTokensHelper         ·  setOracleBorrowRates             ·          -  ·          -  ·     149397  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  StableAndVariableTokensHelper         ·  setOracleOwnership               ·          -  ·          -  ·      35516  ·            2  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  Treasury                              ·  buybackRnbw                      ·          -  ·          -  ·     358844  ·            1  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  Treasury                              ·  sendToVestingContract            ·          -  ·          -  ·      44369  ·            1  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  WETHGateway                           ·  authorizeLendingPool             ·          -  ·          -  ·      51538  ·            1  ·          -  │
+·········································|···································|·············|·············|·············|···············|··············
+|  Deployments                                                               ·                                         ·  % of limit   ·             │
+·············································································|·············|·············|·············|···············|··············
+|  AaveOracle                                                                ·          -  ·          -  ·     814172  ·        6.5 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  AaveProtocolDataProvider                                                  ·          -  ·          -  ·    1555866  ·       12.5 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  AToken                                                                    ·          -  ·          -  ·    2325625  ·       18.7 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  ATokensAndRatesHelper                                                     ·          -  ·          -  ·    3792708  ·       30.5 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  CurveFactoryMock                                                          ·          -  ·          -  ·     179087  ·        1.4 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  CurveMock                                                                 ·          -  ·          -  ·     323519  ·        2.6 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  DefaultReserveInterestRateStrategy                                        ·          -  ·          -  ·     790705  ·        6.4 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  DelegationAwareAToken                                                     ·          -  ·          -  ·    2437054  ·       19.6 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  FlashLiquidationAdapter                                                   ·          -  ·          -  ·    2402171  ·       19.3 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  GenericLogic                                                              ·          -  ·          -  ·     851914  ·        6.8 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  LendingPool                                                               ·          -  ·          -  ·    4797964  ·       38.5 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProvider                                              ·          -  ·          -  ·    1604832  ·       12.9 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  LendingPoolAddressesProviderRegistry                                      ·          -  ·          -  ·     543411  ·        4.4 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  LendingPoolCollateralManager                                              ·          -  ·          -  ·    2372785  ·       19.1 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  LendingPoolConfigurator                                                   ·          -  ·          -  ·    3484625  ·         28 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  LendingRateOracle                                                         ·          -  ·          -  ·     345146  ·        2.8 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  MintableERC20                                                             ·     748708  ·     748732  ·     748726  ·          6 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  MockAggregator                                                            ·     111522  ·     111546  ·     111539  ·        0.9 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  MockEmissionManager                                                       ·          -  ·          -  ·     360267  ·        2.9 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  MockFlashLoanReceiver                                                     ·          -  ·          -  ·     590093  ·        4.7 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  MockUniswapV2Router02                                                     ·          -  ·          -  ·     819241  ·        6.6 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  PriceOracle                                                               ·          -  ·          -  ·     153505  ·        1.2 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  ReserveLogic                                                              ·          -  ·          -  ·     176615  ·        1.4 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  RnbwIncentivesController                                                  ·          -  ·          -  ·    1143673  ·        9.2 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  RnbwMock                                                                  ·          -  ·          -  ·     986100  ·        7.9 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  StableAndVariableTokensHelper                                             ·          -  ·          -  ·    3699874  ·       29.7 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  StableDebtToken                                                           ·          -  ·          -  ·    1716647  ·       13.8 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  Treasury                                                                  ·          -  ·          -  ·     964133  ·        7.7 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  UniswapLiquiditySwapAdapter                                               ·          -  ·          -  ·    3053726  ·       24.5 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  UniswapMock                                                               ·          -  ·          -  ·     266919  ·        2.1 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  UniswapRepayAdapter                                                       ·          -  ·          -  ·    2897716  ·       23.3 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  ValidationLogic                                                           ·          -  ·          -  ·    1838521  ·       14.8 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  VariableDebtToken                                                         ·          -  ·          -  ·    1421292  ·       11.4 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  VestingContractMock                                                       ·          -  ·          -  ·    1135439  ·        9.1 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  WalletBalanceProvider                                                     ·          -  ·          -  ·     627128  ·          5 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  WETH9Mocked                                                               ·          -  ·          -  ·     538638  ·        4.3 %  ·          -  │
+·············································································|·············|·············|·············|···············|··············
+|  WETHGateway                                                               ·          -  ·          -  ·    1217607  ·        9.8 %  ·          -  │
+·----------------------------------------------------------------------------|-------------|-------------|-------------|---------------|-------------·
+
+  2 passing (19s)
+
+```
 
 ## License
 
