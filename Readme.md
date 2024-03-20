@@ -5,7 +5,7 @@
           </span>
           <br />
           <span id="project-value">
-               Lending Market
+               Xave Lending Market
           </span>
     </div>
      <div id="details">
@@ -15,7 +15,7 @@
                </span>
                <br />
                <span class="details-value">
-                    HaloDAO
+                    Xave Finance
                </span>
                <br />
                <span class="splash-title">
@@ -70,11 +70,11 @@
 
 ## Details
 
-- **Client** HaloDAO
+- **Client** Xave Finance
 - **Date** October 2021
 - **Lead reviewer** Andrei Simion ([@andreiashu](https://twitter.com/andreiashu))
 - **Reviewers** Daniel Luca ([@cleanunicorn](https://twitter.com/cleanunicorn)), Andrei Simion ([@andreiashu](https://twitter.com/andreiashu))
-- **Repository**: [Lending Market](git@github.com:HaloDAO/lending-market-v1.git)
+- **Repository**: [Xave Lending Market](git@github.com:akiratechhq/review-xave-lending-market-2021-10.git)
 - **Commit hash** `01486a398b0aa36b9798ba06fce11b5d3376909d`
 - **Technologies**
   - Solidity
@@ -92,16 +92,16 @@
 ## Executive summary
 
 
-This report represents the results of the engagement with **HaloDAO** to review **Lending Market**.
+This report represents the results of the engagement with **Xave Finance** to review **Xave Lending Market**.
 
-The review is part of a broader engagement with HaloDAO that also includes the [HaloDAO AMM](https://github.com/akiratechhq/review-halo-dao-setcaps-amm-2021-10) component.
+The review is part of a broader engagement with Xave Finance that also includes the [Xave AMM](https://github.com/akiratechhq/review-halo-dao-setcaps-amm-2021-10) component.
 
 The full review was conducted over the course of **2 weeks** from **October 18th to October 29th, 2021**. We spent a total of **15 person-days** reviewing the code.
 
 
 ## Scope
 
-The initial review focused on the [Lending Market](git@github.com:HaloDAO/lending-market-v1.git) repository, identified by the commit hash `01486a398b0aa36b9798ba06fce11b5d3376909d`.
+The initial review focused on the [Xave Lending Market](git@github.com:akiratechhq/review-xave-lending-market-2021-10.git) repository, identified by the commit hash `01486a398b0aa36b9798ba06fce11b5d3376909d`.
 
 We focused on manually reviewing the codebase, searching for security issues such as, but not limited to, re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, costly gas patterns, architectural problems, code readability.
 
@@ -137,7 +137,7 @@ A good rule of thumb is to have 100% test coverage. This does not guarantee the 
 ## Issues
 
 
-### [`Treasury.buybackRnbw()` is vulnerable to price manipulation attacks](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/issues/1)
+### [`Treasury.buybackRnbw()` is vulnerable to price manipulation attacks](https://github.com/akiratechhq/review-xave-lending-market-2021-10/issues/1)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Medium](https://img.shields.io/static/v1?label=Severity&message=Medium&color=FF9500&style=flat-square)
 
 **Description**
@@ -145,7 +145,7 @@ A good rule of thumb is to have 100% test coverage. This does not guarantee the 
 The owner of the `Treasury` can call the `buybackRnbw` function to convert one or more of the underlying tokens within a lending pool to `rnbw` tokens:
 
 
-[code/contracts/buyback/Treasury.sol#L44](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L44)
+[code/contracts/buyback/Treasury.sol#L44](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L44)
 ```solidity
   function buybackRnbw(address[] calldata _underlyings) external onlyOwner returns (uint256) {
 ```
@@ -153,7 +153,7 @@ The owner of the `Treasury` can call the `buybackRnbw` function to convert one o
 The function first uses the cloned DFX protocol to convert the token into USDC:
 
 
-[code/contracts/buyback/Treasury.sol#L81-L88](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L81-L88)
+[code/contracts/buyback/Treasury.sol#L81-L88](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L81-L88)
 ```solidity
     uint256 targetAmount =
       ICurve(curveAddress).originSwap(
@@ -168,7 +168,7 @@ The function first uses the cloned DFX protocol to convert the token into USDC:
 After that the Uniswap V2 protocol is used to convert from USDC to RNBW tokens:
 
 
-[code/contracts/buyback/Treasury.sol#L59-L69](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L59-L69)
+[code/contracts/buyback/Treasury.sol#L59-L69](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L59-L69)
 ```solidity
     address[] memory path = new address[](3);
     path[0] = USDC;
@@ -213,7 +213,7 @@ For example, Uniswap V2 [getAmountsOut](https://docs.uniswap.org/protocol/V2/ref
 ---
 
 
-### [WETH9 state variable can be made constant to save gas costs](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/issues/6)
+### [WETH9 state variable can be made constant to save gas costs](https://github.com/akiratechhq/review-xave-lending-market-2021-10/issues/6)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
 
 **Description**
@@ -221,7 +221,7 @@ For example, Uniswap V2 [getAmountsOut](https://docs.uniswap.org/protocol/V2/ref
 `WETH9` state variable never changes therefore it can be defined as a constant to save gas costs:
 
 
-[code/contracts/buyback/Treasury.sol#L26](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L26)
+[code/contracts/buyback/Treasury.sol#L26](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/fbfed0a187e9d8df75172a17a83d6cafbb5cbc8a/code/contracts/buyback/Treasury.sol#L26)
 ```solidity
   address public WETH9 = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 ```
@@ -230,7 +230,7 @@ For example, Uniswap V2 [getAmountsOut](https://docs.uniswap.org/protocol/V2/ref
 ---
 
 
-### [Reuse openzeppelin libraries](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/issues/4)
+### [Reuse openzeppelin libraries](https://github.com/akiratechhq/review-xave-lending-market-2021-10/issues/4)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
 
 **Description**
@@ -238,7 +238,7 @@ For example, Uniswap V2 [getAmountsOut](https://docs.uniswap.org/protocol/V2/ref
 In most cases the code makes use of the OpenZeppelin's standard libraries:
 
 
-[code/contracts/buyback/Treasury.sol#L7-L9](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L7-L9)
+[code/contracts/buyback/Treasury.sol#L7-L9](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L7-L9)
 ```solidity
 import {SafeMath} from '@openzeppelin/contracts/math/SafeMath.sol';
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
@@ -248,7 +248,7 @@ import {IERC20} from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 In other cases, however, the code uses copy-pasted versions of the same libraries:
 
 
-[code/contracts/incentives/RnbwIncentivesController.sol#L6-L8](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/incentives/RnbwIncentivesController.sol#L6-L8)
+[code/contracts/incentives/RnbwIncentivesController.sol#L6-L8](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/incentives/RnbwIncentivesController.sol#L6-L8)
 ```solidity
 import {SafeMath} from './lib/SafeMath.sol';
 
@@ -423,7 +423,7 @@ Remove the following contracts from `./code/contracts/incentives/lib/` folder an
 ---
 
 
-### [Unnecessary future `deadline` value passed to swap functions](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/issues/2)
+### [Unnecessary future `deadline` value passed to swap functions](https://github.com/akiratechhq/review-xave-lending-market-2021-10/issues/2)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
 
 **Description**
@@ -431,7 +431,7 @@ Remove the following contracts from `./code/contracts/incentives/lib/` folder an
 `Treasury.buybackRnbw()` uses Uniswap V2 to convert underlying tokens into USDC:
 
 
-[code/contracts/buyback/Treasury.sol#L63-L69](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L63-L69)
+[code/contracts/buyback/Treasury.sol#L63-L69](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L63-L69)
 ```solidity
     rnbwBought = IUniswapV2Router02(router).swapExactTokensForTokens(
       usdcBalance,
@@ -476,7 +476,7 @@ Instead of `block.timestamp + 60` just pass `block.timestamp` as the deadline ar
 A similar change can be made to the `originSwap` call:
 
 
-[code/contracts/buyback/Treasury.sol#L81-L88](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L81-L88)
+[code/contracts/buyback/Treasury.sol#L81-L88](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L81-L88)
 ```solidity
     uint256 targetAmount =
       ICurve(curveAddress).originSwap(
@@ -488,7 +488,7 @@ A similar change can be made to the `originSwap` call:
       );
 ```
 
-The issue here though is that you still need to add `+1` to the `block.timestamp` because of the way the `deadline` modifier in `Curve.sol` is defined. Because of this, we leave it to the HaloDao team the decision change the call to `originSwap` since there are no (gas) benefits, although it might provide more clarity to the reader:
+The issue here though is that you still need to add `+1` to the `block.timestamp` because of the way the `deadline` modifier in `Curve.sol` is defined. Because of this, we leave it to the Xave Finance team the decision change the call to `originSwap` since there are no (gas) benefits, although it might provide more clarity to the reader:
 
 ```solidity
     modifier deadline(uint256 _deadline) {
@@ -500,7 +500,7 @@ The issue here though is that you still need to add `+1` to the `block.timestamp
 ---
 
 
-### [Remove obsolete modifier in `Treasury` contract](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/issues/3)
+### [Remove obsolete modifier in `Treasury` contract](https://github.com/akiratechhq/review-xave-lending-market-2021-10/issues/3)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
 
 **Description**
@@ -508,7 +508,7 @@ The issue here though is that you still need to add `+1` to the `block.timestamp
 The `onlyEOA` modifier is obsolete and can be removed:
 
 
-[code/contracts/buyback/Treasury.sol#L98-L101](https://github.com/akiratechhq/review-halo-dao-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L98-L101)
+[code/contracts/buyback/Treasury.sol#L98-L101](https://github.com/akiratechhq/review-xave-lending-market-2021-10/blob/15d777ba6d5690c918bff660532b68887ef23914/code/contracts/buyback/Treasury.sol#L98-L101)
 ```solidity
   modifier onlyEOA() {
     require(msg.sender == tx.origin, 'Only EOA allowed');
